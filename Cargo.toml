@@ -1,5 +1,5 @@
 [package]
-name = "firecore-font-builder"
+name = "font-builder"
 version = "0.1.0"
 authors = ["Rhys Holloway <rhyswilliamholloway@gmail.com>"]
 edition = "2018"
