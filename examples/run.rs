@@ -1,9 +1,11 @@
 use std::time::Instant;
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+use font_builder::error::FontError;
+
+fn main() -> Result<(), FontError> {
     println!("Starting font serialization");
     let start = Instant::now();
-    firecore_font_builder::build_font("fonts", "output/fonts.bin")?;
+    font_builder::compile("fonts", "output/fonts.bin")?;
     println!("Finished serializing fonts in {}ms.", start.elapsed().as_millis());
     Ok(())
 }
