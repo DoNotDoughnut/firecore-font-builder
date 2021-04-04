@@ -3,7 +3,7 @@ pub enum FontError {
 
     IOError(std::io::Error),
     ParseError(String, ron::Error),
-    SerializeError(bincode::Error),
+    SerializeError(postcard::Error),
 
 }
 
@@ -15,8 +15,8 @@ impl From<std::io::Error> for FontError {
     }
 }
 
-impl From<bincode::Error> for FontError {
-    fn from(err: bincode::Error) -> Self {
+impl From<postcard::Error> for FontError {
+    fn from(err: postcard::Error) -> Self {
         Self::SerializeError(err)
     }
 }

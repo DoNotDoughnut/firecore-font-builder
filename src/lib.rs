@@ -31,7 +31,7 @@ pub fn compile<P: AsRef<Path>>(font_folder: P, output_file: P) -> Result<(), Fon
     let mut file = std::fs::File::create(output_file)?;
 
     println!("Serializing fonts...");
-    let bytes = bincode::serialize(&firecore_font_lib::SerializedFonts {
+    let bytes = postcard::to_allocvec(&firecore_font_lib::SerializedFonts {
         fonts
     })?;
 
