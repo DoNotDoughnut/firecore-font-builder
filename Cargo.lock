@@ -38,7 +38,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "font-builder"
+name = "firecore-font-builder"
 version = "0.4.0"
 dependencies = [
  "firecore-dependencies",
