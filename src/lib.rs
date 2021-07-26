@@ -1,7 +1,7 @@
 use std::io::Write;
 use std::path::Path;
 
-use firecore_font::{FontSheet, FontSheetFile, SerializedFonts};
+use firecore_engine::font::{FontSheet, FontSheetFile, SerializedFonts};
 
 pub fn compile<P: AsRef<Path>>(font_folder: P, output_file: P) {
     let font_folder = font_folder.as_ref();
@@ -21,10 +21,10 @@ pub fn compile<P: AsRef<Path>>(font_folder: P, output_file: P) {
                         .unwrap_or_else(|err| panic!("Could not read file at {:?} to string with error {}", file, err));
                     let font_sheet_file: FontSheetFile = ron::from_str(&content)
                         .unwrap_or_else(|err| panic!("Could not parse file at {:?} with error {}", file, err));
-                    let image = std::fs::read(font_folder.join(&font_sheet_file.file))
-                        .unwrap_or_else(|err| panic!("Could not read image file at {} for sheet #{} with error {}", font_sheet_file.file, font_sheet_file.data.id, err));
+                    let sheet = std::fs::read(font_folder.join(&font_sheet_file.sheet))
+                        .unwrap_or_else(|err| panic!("Could not read image file at {} for sheet #{} with error {}", font_sheet_file.sheet, font_sheet_file.data.id, err));
                     fonts.push(FontSheet {
-                        image,
+                        sheet,
                         data: font_sheet_file.data,
                     });
                 }
