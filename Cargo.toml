@@ -1,13 +1,12 @@
 [package]
 name = "firecore-font-builder"
-version = "0.5.0-beta.2021-07-26"
+version = "0.0.1"
 authors = ["Rhys Holloway <rhyswilliamholloway@gmail.com>"]
 edition = "2018"
 
 [dependencies]
 
-firecore-engine = { git = "https://github.com/DoNotDoughnut/firecore-engine" }
-firecore-dependencies = { git = "https://github.com/DoNotDoughnut/firecore-dependencies", features = ["ser"] }
+firecore-engine = { git = "https://github.com/fiirecore/engine", rev = "a147490" }
 
 serde = { version = "1.0", features = ["derive"] }
 ron = "0.6"
