@@ -1,13 +1,35 @@
+use serde::Deserialize;
 use std::path::Path;
 
-use firecore_engine::font::{FontSheet, FontSheetFile, SerializedFonts};
+pub type FontId = u8;
+pub(crate) type SizeInt = u8;
 
-pub fn compile(font_folder: impl AsRef<Path>) -> SerializedFonts {
+#[derive(Debug, Deserialize)]
+pub struct FontSheetData {
+    pub id: FontId,
+    pub width: SizeInt,
+    pub height: SizeInt,
+    pub chars: String,
+    pub custom: Vec<CustomChar>,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct CustomChar {
+    pub id: char,
+    pub width: SizeInt,
+    pub height: Option<SizeInt>,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct FontSheet<S> {
+    pub sheet: S,
+    pub data: FontSheetData,
+}
+
+pub fn compile(font_folder: impl AsRef<Path>) -> Vec<FontSheet<Vec<u8>>> {
     let font_folder = font_folder.as_ref();
 
-    println!("Reading fonts...");
-
-    let fonts = std::fs::read_dir(font_folder)
+    std::fs::read_dir(font_folder)
         .unwrap_or_else(|err| panic!("Could not read font folder with error {}", err))
         .flatten()
         .map(|entry| entry.path())
@@ -19,7 +41,7 @@ pub fn compile(font_folder: impl AsRef<Path>) -> SerializedFonts {
                         file, err
                     )
                 });
-                let font_sheet_file: FontSheetFile =
+                let font_sheet_file: FontSheet<String> =
                     ron::from_str(&content).unwrap_or_else(|err| {
                         panic!("Could not parse file at {:?} with error {}", file, err)
                     });
@@ -38,7 +60,5 @@ pub fn compile(font_folder: impl AsRef<Path>) -> SerializedFonts {
                 None
             }
         })
-        .collect();
-
-    SerializedFonts { fonts }
+        .collect()
 }
