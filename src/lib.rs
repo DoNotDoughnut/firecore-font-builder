@@ -1,10 +1,9 @@
-use serde::Deserialize;
-use std::path::Path;
+use serde::{Deserialize, Serialize};
 
 pub type FontId = u8;
 pub(crate) type SizeInt = u8;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct FontSheetData {
     pub id: FontId,
     pub width: SizeInt,
@@ -13,20 +12,21 @@ pub struct FontSheetData {
     pub custom: Vec<CustomChar>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct CustomChar {
     pub id: char,
     pub width: SizeInt,
     pub height: Option<SizeInt>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct FontSheet<S> {
     pub sheet: S,
     pub data: FontSheetData,
 }
 
-pub fn compile(font_folder: impl AsRef<Path>) -> Vec<FontSheet<Vec<u8>>> {
+#[cfg(feature = "compile")]
+pub fn compile(font_folder: impl AsRef<std::path::Path>) -> Vec<FontSheet<Vec<u8>>> {
     let font_folder = font_folder.as_ref();
 
     std::fs::read_dir(font_folder)
